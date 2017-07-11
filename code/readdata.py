@@ -69,6 +69,27 @@ def getData(path):
     print(srelative-prelative)
     return p_line, s_line, frame
     
+def getrawData(path):
+    st = read(path)
+    stat = st[0].stats
+    delta = stat.delta
+   
+    data = st[0].data
+    
+    btime = stat.sac.b
+    etime = stat.sac.e
+    srelative = 0
+    if 't0' in stat.sac:
+        stime = stat.sac.t0
+        srelative = stime-btime
+        srelative = int(srelative/delta)
+    prelative = 0
+    if 'a' in stat.sac:
+        ptime = stat.sac.a
+        prelative = ptime-btime
+        prelative = int(prelative/delta)
+    return data, srelative, prelative
+    
 def decompose(ts):  
     decomposition = seasonal_decompose(ts[2], freq=72)
     trend = decomposition.trend
@@ -95,20 +116,16 @@ def readfile():
     dataarr = []
     filearr = []
     for i in range(length):
-        print(file_list[i])
+        # print(file_list[i])
         p_line, s_line, frame = getData(file_list[i])
         if i%3==0 and not i == 0:
             # for j in range(3):
                 # decompose(dataarr[j])
             for j in range(3):
                 p = plt.subplot(310+j+1)
-                p.plot(dataarr[j][2]-np.mean(dataarr[j][2]))
-                print(np.mean(dataarr[j][2]-np.mean(dataarr[j][2])))
+                p.plot(dataarr[j][2])
                 p.plot(dataarr[j][0],color = 'g')
                 p.plot(dataarr[j][1],color = 'r')    
-                
-                # p.plot(pd.rolling_mean(dataarr[j][2], window=2))
-                # p.plot(pd.rolling_std(dataarr[j][2], window=2))
                 plt.title(filearr[j])
             plt.show()
             dataarr = []
@@ -122,6 +139,7 @@ def readfile():
         p.plot(dataarr[j][1],color = 'r')             
         plt.title(filearr[j])
     plt.show()
+    return totaldataarr,totalfilearr
     
 if __name__=="__main__":
     readfile()
