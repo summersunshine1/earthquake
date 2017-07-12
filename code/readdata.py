@@ -66,7 +66,7 @@ def getData(path):
         prelative = int(prelative/delta)
         p_line = line(times, prelative) 
     frame = convert_array_to_frame(data, times)
-    print(srelative-prelative)
+    # print(srelative-prelative)
     return p_line, s_line, frame
     
 def getrawData(path):
@@ -110,7 +110,7 @@ def decompose(ts):
     plt.show()
 
 def readfile():
-    file_list = listfiles(example_dir)
+    file_list = listfiles(sample_dir)
     i = 0
     length = len(file_list)
     dataarr = []
